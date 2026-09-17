@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoEner Pro | Servicios y Foro</title>
+    
+    <!-- Pre-conexiones a CDNs para compensar la lentitud del servidor tradicional -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        eco: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.88);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 font-sans antialiased selection:bg-eco-500 selection:text-white">
+
+    <div id="sslWarning" class="hidden bg-rose-600 text-white text-xs font-bold px-4 py-2 text-center items-center justify-center gap-2 z-50 relative">
+        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        <span>Atención: Conexión HTTP (Sin SSL). Para pagos seguros, asegúrese de navegar mediante HTTPS.</span>
+        <button onclick="document.getElementById('sslWarning').remove()" class="ml-2 text-rose-200 hover:text-white p-1 rounded hover:bg-rose-700 transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <header class="sticky top-0 z-40 glass border-b border-slate-200/60 dark:border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logotipo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-eco-600 to-emerald-400 flex items-center justify-center text-white shadow-lg shadow-eco-500/30">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white block leading-none">Eco<span class="text-eco-600 dark:text-eco-500">Ener</span> <span class="text-xs bg-eco-100 text-eco-800 dark:bg-eco-900/50 dark:text-eco-300 px-2 py-0.5 rounded-full font-semibold">PRO</span></span>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase block mt-0.5">Servicios Energéticos</span>
+                    </div>
+                </div>
+
+                <!-- Menú Escritorio -->
+                <nav class="hidden xl:flex items-center space-x-6 font-medium text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                    <a href="#sobre-nosotros" class="hover:text-eco-600 dark:hover:text-eco-400 transition-colors">Nosotros</a>
+                    <a href="#mi-perfil" class="hover:text-eco-600 dark:hover:text-eco-400 transition-colors">Mi Perfil</a>
+                    <a href="#servicios" class="hover:text-eco-600 dark:hover:text-eco-400 transition-colors">Auditorías Energéticas</a>
+                    <a href="#calculadora" class="hover:text-eco-600 dark:hover:text-eco-400 transition-colors">Calculadora Solar</a>
+                    <a href="#foro" class="hover:text-eco-600 dark:hover:text-eco-400 transition-colors">Foro de Eficiencia</a>
+                </nav>
+
+                <!-- Botones de Acción (Solo Tema y Contacto/Contratar) -->
+                <div class="hidden xl:flex items-center space-x-3">
+                    <button id="themeToggle" onclick="toggleTheme()" class="p-2 rounded-lg text-slate-500 hover:bg-slate-200/60 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors" aria-label="Cambiar tema">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+                    <a href="#servicios" class="text-xs sm:text-sm font-semibold text-white bg-eco-600 hover:bg-eco-700 px-4 py-2.5 rounded-xl shadow-md shadow-eco-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                        Solicitar Auditoría
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="flex items-center space-x-2 xl:hidden">
+                    <button id="themeToggleMobile" onclick="toggleTheme()" class="p-2 rounded-lg text-slate-500 dark:text-slate-400">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+                    <button id="menuBtn" onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobileMenu" class="hidden xl:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 px-4 pt-2 pb-6 space-y-3">
+            <a href="#sobre-nosotros" onclick="closeMobileMenu()" class="block py-2 text-slate-600 dark:text-slate-300 font-medium hover:text-eco-600">Nosotros</a>
+            <a href="#mi-perfil" onclick="closeMobileMenu()" class="block py-2 text-slate-600 dark:text-slate-300 font-medium hover:text-eco-600">Mi Perfil</a>
+            <a href="#servicios" onclick="closeMobileMenu()" class="block py-2 text-slate-600 dark:text-slate-300 font-medium hover:text-eco-600">Auditorías Energéticas</a>
+            <a href="#calculadora" onclick="closeMobileMenu()" class="block py-2 text-slate-600 dark:text-slate-300 font-medium hover:text-eco-600">Calculadora Solar</a>
+            <a href="#foro" onclick="closeMobileMenu()" class="block py-2 text-slate-600 dark:text-slate-300 font-medium hover:text-eco-600">Foro de Eficiencia</a>
+            <div class="pt-2 space-y-2">
+                <a href="#servicios" onclick="closeMobileMenu()" class="w-full text-center block py-2.5 rounded-xl font-semibold text-white bg-eco-600">Solicitar Auditoría</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="sobre-nosotros" class="pt-12 pb-8 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                <h2 class="text-base text-eco-600 dark:text-eco-400 font-bold uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="info" class="w-5 h-5"></i> Información del Sitio
+                </h2>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-800/40 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-eco-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <h3 id="infoTitleDisplay" class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4 relative z-10">Cargando...</h3>
+                <p id="infoDescDisplay" class="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-4xl relative z-10 whitespace-pre-wrap">Cargando información corporativa...</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="mi-perfil" class="py-12 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col mb-8 gap-2">
+                <h2 class="text-base text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="user-circle" class="w-5 h-5"></i> Espacio del Cliente
+                </h2>
+                <p class="text-3xl font-extrabold text-slate-900 dark:text-white">
+                    Tus Datos Personales
+                </p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Información de tu cuenta y métodos de contacto registrados.
+                </p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800/60 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-lg relative">
+                <!-- Capa indicadora de solo lectura -->
+                <div class="absolute top-6 right-6 flex items-center gap-1.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">
+                    <i data-lucide="lock" class="w-3.5 h-3.5"></i> Solo Lectura
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+                    <!-- Campo: Nombre -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Nombre Completo</label>
+                        <div class="relative">
+                            <input type="text" readonly value="JOSÉ BASILIO NOVAEZ CABELLO" class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 cursor-not-allowed outline-none font-medium focus:ring-0">
+                            <i data-lucide="user" class="w-5 h-5 text-slate-400 absolute left-3 top-3.5"></i>
+                            <i data-lucide="lock" class="w-4 h-4 text-slate-300 dark:text-slate-600 absolute right-3 top-4"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo: Correo Contacto -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Correo para Contacto</label>
+                        <div class="relative">
+                            <input type="email" readonly value="novaezjose92@gmail.com" class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 cursor-not-allowed outline-none font-medium focus:ring-0">
+                            <i data-lucide="mail" class="w-5 h-5 text-slate-400 absolute left-3 top-3.5"></i>
+                            <i data-lucide="lock" class="w-4 h-4 text-slate-300 dark:text-slate-600 absolute right-3 top-4"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo: Correo PayPal -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Correo PayPal</label>
+                        <div class="relative">
+                            <input type="email" readonly value="krlsnovaez@gmail.com" class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 cursor-not-allowed outline-none font-medium focus:ring-0">
+                            <i data-lucide="credit-card" class="w-5 h-5 text-slate-400 absolute left-3 top-3.5"></i>
+                            <i data-lucide="lock" class="w-4 h-4 text-slate-300 dark:text-slate-600 absolute right-3 top-4"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-5 border-t border-slate-100 dark:border-slate-700/60">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 flex items-start sm:items-center gap-2">
+                        <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5 sm:mt-0"></i>
+                        <span>Por motivos de seguridad, los datos de facturación y contacto se encuentran protegidos. Si necesitas actualizar esta información, por favor contacta con soporte técnico.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="pt-24 pb-20 bg-slate-100/70 dark:bg-slate-800/40 min-h-[80vh]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+                <div>
+                    <h2 class="text-base text-eco-600 dark:text-eco-400 font-bold uppercase tracking-wider">Servicios Especializados</h2>
+                    <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+                        Catálogo de Auditorías Energéticas
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm">Elige la auditoría adecuada para tu inmueble y contrata en línea con total seguridad.</p>
+                </div>
+            </div>
+
+            <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Los servicios se cargarán aquí dinámicamente desde el localStorage -->
+            </div>
+        </div>
+    </section>
+
+    <section id="calculadora" class="py-20 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-72 h-72 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-base text-amber-500 dark:text-amber-400 font-bold uppercase tracking-wider flex items-center justify-center gap-2">
+                    <i data-lucide="sun" class="w-5 h-5"></i> Simulación Fotovoltaica
+                </h2>
+                <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+                    Calculadora de Autoconsumo
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-3">Descubre cuántos paneles necesitas, el coste aproximado de la instalación y en cuánto tiempo amortizarás tu inversión.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto">
+                <div class="lg:col-span-5 bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+                    <h3 class="font-bold text-lg mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="calculator" class="w-5 h-5 text-eco-600"></i> Introduce tus datos
+                    </h3>
+                    <form onsubmit="calculateSolar(event)" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-300">Gasto mensual de luz aproximado (<span class="currencySymbol">€</span>)</label>
+                            <div class="relative">
+                                <input type="number" id="calcBill" required placeholder="Ej. 120" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-eco-500 outline-none transition-all">
+                                <i data-lucide="euro" class="w-5 h-5 text-slate-400 absolute left-3 top-3.5"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-300">Superficie de tejado disponible (m²)</label>
+                            <div class="relative">
+                                <input type="number" id="calcArea" required placeholder="Ej. 50" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-eco-500 outline-none transition-all">
+                                <i data-lucide="layout-grid" class="w-5 h-5 text-slate-400 absolute left-3 top-3.5"></i>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-extrabold text-sm shadow-md transition-all hover:scale-[1.02]">
+                            Calcular Ahorro
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="lg:col-span-7">
+                    <div id="calcResults" class="hidden bg-eco-600 rounded-3xl p-6 sm:p-8 shadow-xl text-white h-full flex flex-col justify-center transition-all duration-500 opacity-100">
+                        <h3 class="font-extrabold text-2xl mb-6 flex items-center gap-2">
+                            <i data-lucide="zap" class="w-6 h-6 text-eco-200"></i> Resultados Estimados
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4 sm:gap-6 mb-6">
+                            <div class="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/20">
+                                <span class="block text-eco-100 text-xs font-semibold mb-1">Potencia Recomendada</span>
+                                <span id="resPower" class="text-2xl font-black">-- kWp</span>
+                            </div>
+                            <div class="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/20">
+                                <span class="block text-eco-100 text-xs font-semibold mb-1">Nº de Paneles (450W)</span>
+                                <span id="resPanels" class="text-2xl font-black">--</span>
+                            </div>
+                            <div class="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/20">
+                                <span class="block text-eco-100 text-xs font-semibold mb-1">Inversión Aprox.</span>
+                                <span id="resInvest" class="text-2xl font-black">--</span>
+                            </div>
+                            <div class="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/20">
+                                <span class="block text-eco-100 text-xs font-semibold mb-1">Amortización (ROI)</span>
+                                <span id="resRoi" class="text-2xl font-black">--</span>
+                            </div>
+                        </div>
+                        <div class="bg-amber-400 text-slate-900 rounded-2xl p-4 font-bold flex items-center justify-between shadow-inner">
+                            <span>Ahorro Anual Estimado:</span>
+                            <span id="resSavings" class="text-2xl font-black text-amber-900">--</span>
+                        </div>
+                    </div>
+                    
+                    <div id="calcPlaceholder" class="bg-slate-100 dark:bg-slate-800/50 rounded-3xl p-6 sm:p-8 h-full flex flex-col items-center justify-center text-center border-2 border-dashed border-slate-300 dark:border-slate-700">
+                        <i data-lucide="line-chart" class="w-16 h-16 text-slate-300 dark:text-slate-600 mb-4"></i>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Rellena el formulario para generar un informe de simulación solar instantáneo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="foro" class="py-20 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-base text-eco-600 dark:text-eco-400 font-bold uppercase tracking-wider">Comunidad Abierta</h2>
+                <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+                    Foro de Eficiencia & Ingeniería Energética
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">Resuelve dudas, comparte experiencias y debate sobre ahorro energético y tecnología limpia.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Formulario Nueva Publicación -->
+                <div class="lg:col-span-1">
+                    <div class="bg-slate-50 dark:bg-slate-800/40 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-md sticky top-24">
+                        <h3 class="font-bold text-lg mb-4 text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="message-square-plus" class="w-5 h-5 text-eco-600"></i>
+                            Nueva Publicación
+                        </h3>
+                        <form id="forumForm" onsubmit="submitForumPost(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Tu Nombre / Usuario</label>
+                                <input type="text" id="forumAuthor" required placeholder="Ej. Carlos Ruiz" class="w-full px-3 py-2 rounded-xl text-sm border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-eco-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Categoría del Foro</label>
+                                <select id="forumCategory" class="w-full px-3 py-2 rounded-xl text-sm border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-eco-500">
+                                    <option value="Eficiencia Energética">Eficiencia Energética General</option>
+                                    <option value="Auditorías y Certificados">Auditorías y Certificaciones</option>
+                                    <option value="Energía Solar">Energía Solar Fotovoltaica</option>
+                                    <option value="Aislamiento">Aislamiento Térmico y Envolvente</option>
+                                    <option value="Subvenciones">Subvenciones y Ayudas Públicas</option>
+                                    <option value="Domótica">Climatización y Domótica</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Título de la Consulta</label>
+                                <input type="text" id="forumTitle" required placeholder="¿Cómo mejorar la calificación energética?" class="w-full px-3 py-2 rounded-xl text-sm border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-eco-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Detalles / Mensaje</label>
+                                <textarea id="forumBody" rows="4" required placeholder="Describe tu consulta sobre eficiencia energética..." class="w-full px-3 py-2 rounded-xl text-sm border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-eco-500"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-3 rounded-xl bg-eco-600 hover:bg-eco-700 text-white font-bold text-sm shadow-md shadow-eco-500/20 transition-all">
+                                Publicar en el Foro
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 space-y-4" id="forumPostsContainer">
+                    <!-- Posts cargados dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-eco-600 flex items-center justify-center text-white">
+                    <i data-lucide="zap" class="w-5 h-5"></i>
+                </div>
+                <span class="text-lg font-bold text-white">EcoEner Pro</span>
+            </div>
+            
+            <div class="text-center md:text-left">
+                <p class="text-sm">© 2026 <span id="footerBusinessName">EcoEner Platform S.L.</span> Portal de Auditorías.</p>
+                <p class="text-xs mt-1 text-slate-500">Contacto: <a id="footerEmail" href="mailto:cobros@ecoenerpro.com" class="hover:text-slate-300 transition-colors">cobros@ecoenerpro.com</a></p>
+                <div class="flex items-center justify-center md:justify-start gap-2 mt-2">
+                    <i data-lucide="users" class="w-4 h-4 text-eco-500"></i>
+                    <span class="text-sm font-semibold">Visitantes: <span class="visitor-count-display text-white font-extrabold ml-1">...</span></span>
+                </div>
+            </div>
+
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="checkoutModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeCheckout()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-eco-100 dark:bg-eco-500/20 text-eco-600 dark:text-eco-400 flex items-center justify-center">
+                    <i data-lucide="lock" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white">Pasarela de Pago Segura</h3>
+                    <p class="text-xs text-slate-500">Titular del cobro: <span id="checkoutMerchantName" class="font-semibold text-slate-700 dark:text-slate-300">Cargando...</span></p>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl mb-6 border border-slate-200 dark:border-slate-700/60">
+                <div class="flex justify-between items-center">
+                    <span id="checkoutItemTitle" class="font-semibold text-sm text-slate-800 dark:text-slate-200">Nombre del Ítem</span>
+                    <span id="checkoutItemPrice" class="font-extrabold text-eco-600 dark:text-eco-400 text-lg">0.00</span>
+                </div>
+            </div>
+
+            <form id="paymentForm" onsubmit="processPayment(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Nombre Completo del Cliente</label>
+                    <!-- Prellenando el campo de nombre usando los datos del perfil si se desea, pero manteniéndolo libre para el pago como venía -->
+                    <input type="text" id="payClientName" required placeholder="Ana García" value="JOSÉ BASILIO NOVAEZ CABELLO" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-eco-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Correo Electrónico (Para recibo y enlace)</label>
+                    <input type="email" id="payClientEmail" required placeholder="ana@ejemplo.com" value="novaezjose92@gmail.com" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-eco-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold mb-2">Método de Pago</label>
+                    <div id="paymentMethodsContainer" class="grid grid-cols-3 gap-2">
+                        <label id="lblCard" class="flex items-center gap-2 text-xs font-bold cursor-pointer bg-slate-100 dark:bg-slate-800 p-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-eco-500 transition-colors">
+                            <input type="radio" name="payMethod" value="card" checked class="accent-eco-500"> Tarjeta
+                        </label>
+                        <label id="lblPaypal" class="flex items-center gap-2 text-xs font-bold cursor-pointer bg-slate-100 dark:bg-slate-800 p-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-eco-500 transition-colors">
+                            <input type="radio" name="payMethod" value="paypal" class="accent-eco-500"> PayPal
+                        </label>
+                        <label id="lblBizum" class="flex items-center gap-2 text-xs font-bold cursor-pointer bg-slate-100 dark:bg-slate-800 p-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-eco-500 transition-colors">
+                            <input type="radio" name="payMethod" value="bizum" class="accent-eco-500"> Bizum
+                        </label>
+                    </div>
+                </div>
+
+                <div id="bizumNotice" class="hidden bg-emerald-50 dark:bg-emerald-950/40 p-3 rounded-xl text-xs text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                    <p class="font-bold flex items-center gap-1"><i data-lucide="smartphone" class="w-4 h-4"></i> Pago por Bizum:</p>
+                    <p class="mt-1">Envía el importe al teléfono: <span id="checkoutBizumPhone" class="font-bold">Cargando...</span> con tu email en el concepto.</p>
+                </div>
+
+                <div id="cardFields" class="space-y-3 pt-2">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Número de Tarjeta</label>
+                        <input type="text" placeholder="4500 0000 0000 0000" maxlength="19" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Expiración</label>
+                            <input type="text" placeholder="MM/AA" maxlength="5" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">CVC</label>
+                            <input type="text" placeholder="123" maxlength="4" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="paySubmitBtn" class="w-full py-3.5 rounded-xl bg-eco-600 hover:bg-eco-700 text-white font-bold text-base shadow-lg shadow-eco-500/20 transition-all mt-4">
+                    Confirmar y Pagar
+                </button>
+            </form>
+
+            <div id="paymentSuccess" class="hidden text-center py-6">
+                <div class="w-16 h-16 bg-eco-100 dark:bg-eco-500/20 text-eco-600 dark:text-eco-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+                </div>
+                <h4 class="text-2xl font-extrabold text-slate-900 dark:text-white">¡Pago Procesado con Éxito!</h4>
+                <p class="text-sm text-slate-500 mt-2">Hemos acreditado la transacción a la cuenta de <strong id="successMerchantName">EcoEner Soluciones S.L.</strong></p>
+                <button onclick="closeCheckout()" class="mt-6 px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold text-sm">
+                    Cerrar Ventana
+                </button>
+            </div>
+
+            <div class="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800">
+                <div class="bg-slate-50 dark:bg-slate-800/40 rounded-xl p-4 flex flex-col gap-3 text-xs text-slate-500 dark:text-slate-400">
+                    <div class="flex items-start gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                        <p><strong>Garantía de Seguridad:</strong> Sus datos de pago están protegidos mediante cifrado SSL de 256 bits.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Contador de Visitantes
+        let visitorCount = parseInt(localStorage.getItem('ecoener_visitors')) || 12458;
+        visitorCount++;
+        localStorage.setItem('ecoener_visitors', visitorCount);
+
+        // Fallbacks por si el admin no ha configurado nada aún
+        const defaultSettings = {
+            businessName: "EcoEner Soluciones S.L.",
+            email: "cobros@ecoenerpro.com",
+            currency: "€",
+            bizumPhone: "+34 600 123 456",
+            enableCard: true,
+            enablePaypal: true,
+            enableBizum: true
+        };
+
+        const defaultServices = [
+            {
+                id: "srv-1",
+                title: "Auditoría Energética Residencial",
+                desc: "Análisis técnico de consumo para viviendas unifamiliares, pisos o comunidades de vecinos.",
+                price: 150,
+                badge: "Ideal Viviendas",
+                icon: "home",
+                features: ["Inspección infrarroja", "Optimizador de factura", "Plan de amortización"]
+            }
+        ];
+
+        const defaultForumPosts = [
+            {
+                id: "post-1",
+                author: "Ing. Miguel Fernández (Admin)",
+                isAdminPost: true,
+                category: "Eficiencia Energética",
+                title: "Resultados de la auditoría",
+                body: "Logramos reducir el consumo global en un 38%.",
+                likes: 24,
+                date: "Hace 45 minutos",
+                replies: []
+            }
+        ];
+
+        const defaultSiteInfo = {
+            title: "Plataforma Líder en Eficiencia Energética",
+            desc: "Somos especialistas en reducir el consumo eléctrico y la huella de carbono de empresas, industrias y comunidades residenciales."
+        };
+
+        // Estado cargado desde localStorage (Alimentado por la futura web admin)
+        let adminSettings = JSON.parse(localStorage.getItem('ecoener_settings')) || defaultSettings;
+        let salesHistory = JSON.parse(localStorage.getItem('ecoener_sales')) || [];
+        let services = JSON.parse(localStorage.getItem('ecoener_services')) || defaultServices;
+        let forumPosts = JSON.parse(localStorage.getItem('ecoener_forum')) || defaultForumPosts;
+        let siteInfo = JSON.parse(localStorage.getItem('ecoener_info')) || defaultSiteInfo;
+
+        let activeCheckoutItem = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSSLForFreeHosting();
+            renderSiteInfo();
+            renderServices();
+            renderForum();
+            setupPaymentListeners();
+            updateCurrencyDisplay();
+            updateVisitorCounter();
+            renderContactInfo();
+            startLiveVisitorSimulation();
+            if (window.lucide) lucide.createIcons();
+
+            window.addEventListener('storage', (e) => {
+                // Si el administrador cambia los servicios en otra pestaña, se actualiza en vivo
+                if (e.key === 'ecoener_services') {
+                    services = JSON.parse(e.newValue) || defaultServices;
+                    renderServices();
+                } 
+                // Si el administrador cambia la info del sitio web
+                else if (e.key === 'ecoener_info') {
+                    siteInfo = JSON.parse(e.newValue) || defaultSiteInfo;
+                    renderSiteInfo();
+                }
+                // Si el administrador actualiza divisas o métodos de pago
+                else if (e.key === 'ecoener_settings') {
+                    adminSettings = JSON.parse(e.newValue) || defaultSettings;
+                    updateCurrencyDisplay();
+                    renderServices(); // Para recargar precios y moneda
+                    renderContactInfo(); // Actualiza el contacto y correo en vivo en el Footer
+                    
+                    // Si el usuario tiene el modal de pago abierto, lo actualizamos también
+                    if (activeCheckoutItem) {
+                        openCheckout(activeCheckoutItem.title, activeCheckoutItem.price);
+                    }
+                }
+            });
+        });
+
+        function renderContactInfo() {
+            const bName = document.getElementById('footerBusinessName');
+            const fEmail = document.getElementById('footerEmail');
+            
+            if(bName) bName.innerText = adminSettings.businessName;
+            if(fEmail) {
+                fEmail.innerText = adminSettings.email;
+                fEmail.href = `mailto:${adminSettings.email}`;
+            }
+        }
+
+        function checkSSLForFreeHosting() {
+            if (window.location.protocol === 'http:' && !window.location.hostname.includes('localhost') && window.location.hostname !== '127.0.0.1') {
+                const warning = document.getElementById('sslWarning');
+                if (warning) {
+                    warning.classList.remove('hidden');
+                    warning.classList.add('flex');
+                }
+            }
+        }
+
+        // TEMA Y NAVEGACIÓN
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+
+        // RENDERIZADO UI (Solo Lectura para Cliente)
+        function updateVisitorCounter() {
+            const displays = document.querySelectorAll('.visitor-count-display');
+            displays.forEach(el => el.innerText = visitorCount.toLocaleString());
+        }
+
+        function startLiveVisitorSimulation() {
+            setInterval(() => {
+                if (Math.random() > 0.6) {
+                    visitorCount++;
+                    localStorage.setItem('ecoener_visitors', visitorCount);
+                    updateVisitorCounter();
+                }
+            }, 4000);
+        }
+
+        function renderSiteInfo() {
+            const titleDisplay = document.getElementById('infoTitleDisplay');
+            const descDisplay = document.getElementById('infoDescDisplay');
+            
+            if(titleDisplay) titleDisplay.innerText = siteInfo.title;
+            if(descDisplay) descDisplay.innerText = siteInfo.desc;
+        }
+
+        function updateCurrencyDisplay() {
+            const symbols = document.querySelectorAll('.currencySymbol');
+            symbols.forEach(el => el.innerText = adminSettings.currency);
+        }
+
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            if(!grid) return;
+            grid.innerHTML = '';
+
+            services.forEach(srv => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between relative transition-all hover:-translate-y-1";
+                
+                let badgeHtml = srv.badge ? `<span class="bg-eco-100 text-eco-800 dark:bg-eco-900/60 dark:text-eco-300 px-3 py-1 rounded-full text-xs font-extrabold">${srv.badge}</span>` : '';
+                
+                let featuresList = '';
+                if(srv.features) {
+                    featuresList = srv.features.map(f => `<li class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300"><i data-lucide="check" class="w-4 h-4 text-eco-500 shrink-0"></i><span>${f}</span></li>`).join('');
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-eco-100 dark:bg-eco-500/20 text-eco-600 dark:text-eco-400 flex items-center justify-center">
+                                <i data-lucide="${srv.icon || 'home'}" class="w-6 h-6"></i>
+                            </div>
+                            ${badgeHtml}
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">${srv.title}</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mb-6 leading-relaxed">${srv.desc}</p>
+                        <ul class="space-y-2 mb-6 border-t border-slate-100 dark:border-slate-700/60 pt-4">
+                            ${featuresList}
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase font-semibold text-slate-400 block">Precio Auditoría</span>
+                            <span class="text-2xl font-black text-slate-900 dark:text-white">${srv.price} ${adminSettings.currency}</span>
+                        </div>
+                        <button onclick="openCheckout('${srv.title}', ${srv.price})" class="px-5 py-2.5 rounded-xl bg-eco-600 hover:bg-eco-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-eco-500/20 transition-all hover:scale-105">
+                            Contratar Online
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            if(window.lucide) lucide.createIcons();
+        }
+
+        // Lógica de Calculadora (Igual para todos)
+        function calculateSolar(e) {
+            e.preventDefault();
+            const bill = parseFloat(document.getElementById('calcBill').value);
+            const area = parseFloat(document.getElementById('calcArea').value);
+
+            if(!bill || !area) return;
+
+            const targetSavings = (bill * 12) * 0.70;
+            const requiredKwp = (targetSavings / 0.16) / 1500;
+            let installedKwp = Math.max(1.5, Math.min(requiredKwp, area / 5));
+
+            const panels = Math.ceil(installedKwp / 0.45); 
+            const actualKwp = panels * 0.45;
+            const actualSavings = (actualKwp * 1500 * 0.16);
+            const investment = actualKwp * 1250;
+            const roi = investment / actualSavings;
+
+            document.getElementById('resPower').innerText = actualKwp.toFixed(2) + ' kWp';
+            document.getElementById('resPanels').innerText = panels + ' uds.';
+            document.getElementById('resSavings').innerText = actualSavings.toFixed(0) + ' €/año';
+            document.getElementById('resInvest').innerText = investment.toFixed(0) + ' €';
+            document.getElementById('resRoi').innerText = roi.toFixed(1) + ' años';
+
+            document.getElementById('calcPlaceholder').classList.add('hidden');
+            document.getElementById('calcResults').classList.remove('hidden');
+        }
+
+        function renderForum() {
+            const container = document.getElementById('forumPostsContainer');
+            if(!container) return;
+            container.innerHTML = '';
+
+            forumPosts.forEach(post => {
+                let badgeAdmin = post.isAdminPost ? `<span class="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1"><i data-lucide="shield-check" class="w-3 h-3"></i> Oficial</span>` : '';
+                
+                let repliesHtml = '';
+                if(post.replies && post.replies.length > 0) {
+                    repliesHtml = post.replies.map(r => `
+                        <div class="bg-slate-100 dark:bg-slate-800/80 p-3 rounded-xl text-xs space-y-1">
+                            <span class="font-bold text-slate-800 dark:text-slate-200">${r.author}</span>
+                            <p class="text-slate-600 dark:text-slate-400">${r.text}</p>
+                        </div>
+                    `).join('');
+                }
+
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-[10px] bg-eco-100 text-eco-800 dark:bg-eco-900/40 dark:text-eco-300 px-2 py-0.5 rounded-md font-bold">${post.category}</span>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white mt-1">${post.title}</h4>
+                            <div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                                <span class="font-semibold text-slate-700 dark:text-slate-300">${post.author}</span>
+                                ${badgeAdmin}
+                                <span>•</span>
+                                <span>${post.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${post.body}</p>
+                    ${repliesHtml ? `<div class="pl-4 border-l-2 border-eco-500 space-y-2 pt-2">${repliesHtml}</div>` : ''}
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700/60 text-xs">
+                        <button onclick="likePost('${post.id}')" class="flex items-center gap-1.5 text-slate-500 hover:text-eco-600 font-semibold transition-colors">
+                            <i data-lucide="thumbs-up" class="w-4 h-4"></i> <span>${post.likes} Útil</span>
+                        </button>
+                        <button onclick="openReplyBox('${post.id}')" class="flex items-center gap-1.5 text-slate-500 hover:text-eco-600 font-semibold transition-colors">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> <span>Responder</span>
+                        </button>
+                    </div>
+                    <div id="replyBox-${post.id}" class="hidden pt-3 border-t border-slate-100 dark:border-slate-700 space-y-2">
+                        <input type="text" id="replyAuthor-${post.id}" placeholder="Tu nombre" class="w-full px-3 py-1.5 rounded-lg text-xs border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                        <textarea id="replyText-${post.id}" rows="2" placeholder="Escribe tu respuesta..." class="w-full px-3 py-1.5 rounded-lg text-xs border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"></textarea>
+                        <button onclick="submitReply('${post.id}')" class="px-4 py-1.5 rounded-lg bg-eco-600 text-white font-bold text-xs">Enviar Respuesta</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            if(window.lucide) lucide.createIcons();
+        }
+
+        function submitForumPost(e) {
+            e.preventDefault();
+            const author = document.getElementById('forumAuthor').value;
+            const category = document.getElementById('forumCategory').value;
+            const title = document.getElementById('forumTitle').value;
+            const body = document.getElementById('forumBody').value;
+
+            // Al ser cliente, nunca será postAdmin
+            const newPost = {
+                id: 'post-' + Date.now(),
+                author: author,
+                isAdminPost: false,
+                category, title, body,
+                likes: 1,
+                date: "Hace un momento",
+                replies: []
+            };
+
+            forumPosts.unshift(newPost);
+            localStorage.setItem('ecoener_forum', JSON.stringify(forumPosts));
+            renderForum();
+            document.getElementById('forumForm').reset();
+        }
+
+        function likePost(id) {
+            const post = forumPosts.find(p => p.id === id);
+            if(post) {
+                post.likes++;
+                localStorage.setItem('ecoener_forum', JSON.stringify(forumPosts));
+                renderForum();
+            }
+        }
+
+        function openReplyBox(id) {
+            const box = document.getElementById(`replyBox-${id}`);
+            if(box) box.classList.toggle('hidden');
+        }
+
+        function submitReply(postId) {
+            const authorInput = document.getElementById(`replyAuthor-${postId}`);
+            const textInput = document.getElementById(`replyText-${postId}`);
+            
+            if(!authorInput.value || !textInput.value) return;
+
+            const post = forumPosts.find(p => p.id === postId);
+            if(post) {
+                if(!post.replies) post.replies = [];
+                post.replies.push({ author: authorInput.value, text: textInput.value });
+                localStorage.setItem('ecoener_forum', JSON.stringify(forumPosts));
+                renderForum();
+            }
+        }
+
+        function openCheckout(title, price) {
+            activeCheckoutItem = { title, price };
+            document.getElementById('checkoutItemTitle').innerText = title;
+            document.getElementById('checkoutItemPrice').innerText = price.toFixed(2) + ' ' + adminSettings.currency;
+            document.getElementById('checkoutMerchantName').innerText = adminSettings.businessName;
+            document.getElementById('checkoutBizumPhone').innerText = adminSettings.bizumPhone;
+
+            // Mostrar/Ocultar métodos de pago según configuración de admin
+            document.getElementById('lblCard').style.display = adminSettings.enableCard ? 'flex' : 'none';
+            document.getElementById('lblPaypal').style.display = adminSettings.enablePaypal ? 'flex' : 'none';
+            document.getElementById('lblBizum').style.display = adminSettings.enableBizum ? 'flex' : 'none';
+            
+            // Autoseleccionar el primer método de pago habilitado por el admin para evitar errores
+            const firstAvailable = [
+                {id: 'card', enabled: adminSettings.enableCard},
+                {id: 'paypal', enabled: adminSettings.enablePaypal},
+                {id: 'bizum', enabled: adminSettings.enableBizum}
+            ].find(m => m.enabled);
+            
+            if(firstAvailable) {
+                const radioInput = document.querySelector(`input[name="payMethod"][value="${firstAvailable.id}"]`);
+                if(radioInput) {
+                    radioInput.checked = true;
+                    // Forzamos un evento "change" para que la UI muestre el bloque de campos correcto
+                    radioInput.dispatchEvent(new Event('change'));
+                }
+            }
+
+            document.getElementById('paymentForm').classList.remove('hidden');
+            document.getElementById('paymentSuccess').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+            activeCheckoutItem = null;
+        }
+
+        function setupPaymentListeners() {
+            const methodRadios = document.querySelectorAll('input[name="payMethod"]');
+            const cardFields = document.getElementById('cardFields');
+            const bizumNotice = document.getElementById('bizumNotice');
+            
+            methodRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if(e.target.value === 'card') {
+                        cardFields.classList.remove('hidden');
+                        bizumNotice.classList.add('hidden');
+                    } else if (e.target.value === 'bizum') {
+                        cardFields.classList.add('hidden');
+                        bizumNotice.classList.remove('hidden');
+                    } else {
+                        cardFields.classList.add('hidden');
+                        bizumNotice.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            if(!activeCheckoutItem) return;
+
+            const clientName = document.getElementById('payClientName').value;
+            const methodSelected = document.querySelector('input[name="payMethod"]:checked').value;
+            
+            // Simular transacción y guardar en LocalStorage para que el admin lo vea en su panel
+            const newSale = {
+                client: clientName,
+                item: activeCheckoutItem.title,
+                method: methodSelected.charAt(0).toUpperCase() + methodSelected.slice(1),
+                price: activeCheckoutItem.price,
+                status: 'Completado'
+            };
+            
+            salesHistory.unshift(newSale);
+            localStorage.setItem('ecoener_sales', JSON.stringify(salesHistory));
+            
+            const successName = document.getElementById('successMerchantName');
+            if(successName) successName.innerText = adminSettings.businessName;
+
+            document.getElementById('paymentForm').classList.add('hidden');
+            document.getElementById('paymentSuccess').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
